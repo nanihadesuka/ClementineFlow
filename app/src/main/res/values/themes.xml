@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+	<style name="Theme.AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+
+		<item name="android:windowLightStatusBar">true</item>
+		<item name="android:statusBarColor" tools:targetApi="l">#FBFBFB</item>
+
+		<item name="colorPrimary">#FBFBFB</item>
+		<item name="colorPrimaryVariant">#E0E0E0</item>
+		<item name="colorOnPrimary">#111111</item>
+
+		<item name="colorSecondary">#FBFBFB</item>
+		<item name="colorSecondaryVariant">#FBFBFB</item>
+		<item name="colorOnSecondary">#111111</item>
+	</style>
+
+	<style name="Theme.AppTheme.NoActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
+
+	<style name="Theme.AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+	<style name="Theme.AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

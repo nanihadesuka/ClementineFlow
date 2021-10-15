@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+	<style name="Theme.AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+		<item name="android:windowLightStatusBar">false</item>
+		<item name="android:statusBarColor" tools:targetApi="l">#080808</item>
+
+		<item name="colorAccent">#2A59B6</item>
+
+		<item name="colorPrimary">#202020</item>
+		<item name="colorPrimaryVariant">#202020</item>
+		<item name="colorOnPrimary">#EEEEEE</item>
+
+		<item name="colorSecondary">#242424</item>
+		<item name="colorSecondaryVariant">#242424</item>
+		<item name="colorOnSecondary">#EEEEEE</item>
+	</style>
+</resources>

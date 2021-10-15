@@ -1,0 +1,1 @@
+protoc --java_out=./app/src/main/java ./app/src/main/java/my/nanihadesuka/clementineflow/backend/pb/remotecontrolmessages.proto
