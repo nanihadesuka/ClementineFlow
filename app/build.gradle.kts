@@ -1,5 +1,4 @@
-import org.jetbrains.kotlin.konan.properties.Properties
-import java.lang.System.load
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -32,11 +31,10 @@ android {
         targetSdk = 31
         versionCode = 1
         versionName = "1.0"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", "ClementineFlow_v$versionName")
         vectorDrawables {
             useSupportLibrary = true
         }
-        setProperty("archivesBaseName", "ClementineFlow_v$versionName")
     }
 
     if (isSignBuild) signingConfigs {
