@@ -10,6 +10,7 @@ import java.io.DataOutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.util.concurrent.TimeoutException
+import java.util.concurrent.atomic.AtomicBoolean
 
 @ExperimentalCoroutinesApi
 class RemoteConnection(
@@ -19,20 +20,35 @@ class RemoteConnection(
     val password: Int?
 )
 {
+    companion object {
+        var gcount = 0
+    }
+
+    val count = gcount
+    init
+    {
+        gcount += 1
+    }
+
     private lateinit var socket: Socket
     private lateinit var dataIn: DataInputStream
     private lateinit var dataOut: DataOutputStream
 
     private val jobsScope = CoroutineScope(Dispatchers.IO)
 
-    suspend fun cancel() = withContext(Dispatchers.IO) {
+    private val disconnectJob  = CoroutineScope(Dispatchers.IO).launch(start = CoroutineStart.LAZY) {
         runCatching {
             sendMessageSync(MessageBuilder.disconnect())
-            messagesFlow.socketConnectionState.emitter.emit(MessagesFlow.SocketConnectionState.DISCONNECTED)
             jobsScope.cancel()
             reconnectRoutineJob.join()
             connectionJob.join()
         }
+    }
+
+    suspend fun disconnect()
+    {
+        disconnectJob.start()
+        disconnectJob.join()
     }
 
     private suspend fun getMessage(): Remotecontrolmessages.Message?
@@ -53,7 +69,7 @@ class RemoteConnection(
             dataOut.write(data)
             dataOut.flush()
         }
-        utils.log("message sent sync", message.type.name)
+        utils.log("message sent sync ($count)", message.type.name)
     }
 
     fun sendMessage(message: Remotecontrolmessages.Message) = jobsScope.launch { sendMessageSync(message = message) }
@@ -85,12 +101,12 @@ class RemoteConnection(
                 if (tries >= maxTries)
                 {
                     messagesFlow.socketConnectionError.emitter.emit(MessagesFlow.SocketConnectionError.ERROR)
-                    utils.log("connectionJob", "Failed to connect times: $tries/$maxTries, max tries reached. Stopped trying.")
+                    utils.log("connectionJob ($count)", "Failed to connect times: $tries/$maxTries, max tries reached. Stopped trying.")
                     return@run
                 }
 
                 val reconnectWaitTime = 5.toLong()
-                utils.log("connectionJob", "Failed to connect, trying to connect again in $reconnectWaitTime seconds. Try $tries/$maxTries")
+                utils.log("connectionJob ($count)", "Failed to connect, trying to connect again in $reconnectWaitTime seconds. Try $tries/$maxTries")
                 delay(reconnectWaitTime * 1000)
                 if (!isActive)
                     return@run
@@ -106,20 +122,20 @@ class RemoteConnection(
                     val message = getMessage()
                     if (isActive && message != null)
                     {
-                        utils.log("RECEVIED MESSAGE TYPE", message.type.name)
+                        utils.log("RECEVIED MESSAGE TYPE ($count)", message.type.name)
                         jobsScope.launch(Dispatchers.Default) { messagesFlow.pipeMessage(message) }
                     }
                 } catch (e: TimeoutException)
                 {
-                    utils.log("getMessage", "TimeoutException")
+                    utils.log("getMessage ($count)", "TimeoutException")
                 } catch (e: Exception)
                 {
-                    utils.log("getMessage", "Error occurred\n" + e.printStackTrace())
+                    utils.log("getMessage ($count)", "Error occurred\n" + e.printStackTrace())
                 }
             }
         }
 
-        utils.log("connectionJob", "------ JOB ENDED -------")
+        utils.log("connectionJob ($count)", "------ JOB ENDED -------")
         messagesFlow.socketConnectionState.emitter.emit(MessagesFlow.SocketConnectionState.DISCONNECTED)
         if (::dataIn.isInitialized) runCatching { dataIn.close() }
         if (::dataOut.isInitialized) runCatching { dataOut.close() }
@@ -132,7 +148,7 @@ class RemoteConnection(
             .filter { it == MessagesFlow.ClementineConnectionState.DEAD }
             .collect {
                 delay(1000 * 4)
-                utils.log("RECONNECT", "Trying to restart server-client connection")
+                utils.log("RECONNECT ($count)", "Trying to restart server-client connection")
                 runCatching {
                     connectionJob.cancel()
                     connectionJob.join()

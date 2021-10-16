@@ -242,7 +242,7 @@ fun ConnectInterface()
                                 App.preferences.REMOTE_AUTHCODE = password ?: -1
                                 App.preferences.REMOTE_NEEDS_AUTHCODE = needsPassword
                                 CoroutineScope(Dispatchers.IO).launch {
-                                    backend.rc.cancel()
+                                    backend.rc.disconnect()
                                     backend.rc = backend.createDefaultRemoteConnection()
                                     clickedConnect = true
                                 }

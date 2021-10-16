@@ -60,7 +60,7 @@ fun MoreDropdownMenu(dropdownOpen : MutableState<Boolean>)
 
         DropdownMenuItem(onClick = {
             CoroutineScope(Dispatchers.IO).launch {
-                backend.rc.cancel()
+                backend.rc.disconnect()
                 backend.rc = backend.createDefaultRemoteConnection()
             }
         }) {
@@ -75,11 +75,12 @@ fun MoreDropdownMenu(dropdownOpen : MutableState<Boolean>)
                         reasonDisconnect = Remotecontrolmessages.ReasonDisconnect.Download_Forbidden
                     }
                 )
-                backend.rc.cancel()
+                backend.rc.disconnect()
             }
         }) {
             Text("Disconnect")
         }
+
 
         val connectionState = when
         {
@@ -88,20 +89,15 @@ fun MoreDropdownMenu(dropdownOpen : MutableState<Boolean>)
             else -> "Disconnected"
         }
 
-        AnimatedContent(
-            targetState = connectionState,
-            transitionSpec = { fadeIn() with fadeOut() }
-        ) { state ->
-            Text(
-                text = state,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .padding(bottom = 10.dp)
-                    .fillMaxWidth()
-                    .alpha(0.5f),
-                textAlign = TextAlign.Center
-            )
-        }
+        Text(
+            text = connectionState,
+            modifier = Modifier
+                .padding(10.dp)
+                .padding(bottom = 10.dp)
+                .alpha(0.5f)
+                .align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center
+        )
 
         Divider()
 
