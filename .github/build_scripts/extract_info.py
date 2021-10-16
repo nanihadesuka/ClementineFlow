@@ -12,9 +12,9 @@ for file in os.listdir(workDir):
         if file.endswith(extension):
             apkFile = file
 
-name, version = re.match("^(.+)_v(\d+\.\d+\.\d+).*\.apk$",apkFile).groups()
+name, version = re.match("^(.+)_v([\d\.]+).*\.apk$",apkFile).groups()
 
-newFileName = f"ClementineFlow_v{version}.apk"
+newFileName = f"{name}_v{version}.apk"
 
 currentPath = os.path.join(workDir,apkFile)
 destinationPath = os.path.join(mainDir,newFileName)
