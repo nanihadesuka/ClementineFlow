@@ -16,15 +16,15 @@ Interface           |  Settings
 ![](picture_0.png)  |  ![](picture_1.png)
 
 ## What it doesn't have (but the official does)
-  - Song covers images
+  - Song cover (images)
   - Downloader
-  - Notification drawer payer controller
-  - Library viewer (only open tabs)
+  - Notification player controller
+  - Library viewer (only can controll open tabs)
 
 ## Why use this and not the official clementine android app
 Although the official clementine app is featured and functional
 it lacks a direct interface from where you can control all the
-usual operations one would want from a player as playlists list, songs
+usual operations one would want from a player such as the playlists list, songs
 list, etc from one place. This app does that. Basically, is a more ergonomic alternative
 
 ## Tech
