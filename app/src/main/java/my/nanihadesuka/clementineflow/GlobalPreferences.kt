@@ -19,6 +19,7 @@ var SharedPreferences.REMOTE_IP by PreferenceDelegate_String("")
 var SharedPreferences.REMOTE_PORT by PreferenceDelegate_Int(5500)
 var SharedPreferences.REMOTE_AUTHCODE by PreferenceDelegate_Int(-1)
 var SharedPreferences.REMOTE_NEEDS_AUTHCODE by PreferenceDelegate_Boolean(true)
+var SharedPreferences.SHOW_VOLUME_SLIDER by PreferenceDelegate_Boolean(false)
 
 fun SharedPreferences.THEME_FOLLOW_SYSTEM_flow() = toFlow(::THEME_FOLLOW_SYSTEM.name) { THEME_FOLLOW_SYSTEM }
 fun SharedPreferences.THEME_TYPE_flow() = toFlow(::THEME_TYPE.name) { THEME_TYPE }
@@ -26,6 +27,7 @@ fun SharedPreferences.REMOTE_IP_flow() = toFlow(::REMOTE_IP.name) { REMOTE_IP }
 fun SharedPreferences.REMOTE_PORT_flow() = toFlow(::REMOTE_PORT.name) { REMOTE_PORT }
 fun SharedPreferences.REMOTE_AUTHCODE_flow() = toFlow(::REMOTE_AUTHCODE.name) { REMOTE_AUTHCODE }
 fun SharedPreferences.REMOTE_NEEDS_AUTHCODE_flow() = toFlow(::REMOTE_NEEDS_AUTHCODE.name) { REMOTE_NEEDS_AUTHCODE }
+fun SharedPreferences.SHOW_VOLUME_SLIDER_flow() = toFlow(::SHOW_VOLUME_SLIDER.name) { SHOW_VOLUME_SLIDER }
 
 fun Context.appSharedPreferences(): SharedPreferences =
     applicationContext.getSharedPreferences("${this.packageName}_preferences", Context.MODE_PRIVATE)

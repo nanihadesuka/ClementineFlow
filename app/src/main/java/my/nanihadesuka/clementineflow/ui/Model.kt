@@ -28,7 +28,6 @@ class Model : ViewModel()
     val responseDisconnect = backend.messagesFlow.responseDisconnect.flow.asLiveData()
 
     var isFirstLoadedPlaylist by mutableStateOf(true)
-    var showVolumeSlider by mutableStateOf(false)
 
     var timeSliderSelected by mutableStateOf(false)
     var timeSliderSelectedPos by mutableStateOf(updateTrackPosition.value?.position?.toFloat() ?: 0f)
@@ -67,6 +66,7 @@ class Model : ViewModel()
     val remote_needs_authcode = remote_needs_authcode_flow.asLiveData()
     val theme_follow_system = App.preferences.THEME_FOLLOW_SYSTEM_flow().asLiveData()
     val theme_type = App.preferences.THEME_TYPE_flow().asLiveData()
+    val show_volume_slider = App.preferences.SHOW_VOLUME_SLIDER_flow().asLiveData()
 
     val clementineConnectionState = backend.messagesFlow.clementineConnectionState.asLiveData()
 

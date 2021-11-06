@@ -405,6 +405,7 @@ private fun SongTimeSlider()
 private fun VolumeSlider()
 {
     val model = viewModel<Model>()
+    val showVolumeSlider by model.show_volume_slider.observeAsState()
     val responseVolume by model.volume.observeAsState()
     val value = responseVolume?.volume?.toFloat() ?: 100f
     val maxValue = 100f
@@ -420,7 +421,7 @@ private fun VolumeSlider()
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
 
         AnimatedVisibility(
-            visible = model.showVolumeSlider,
+            visible = showVolumeSlider ?: false,
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier.weight(1f)
@@ -466,14 +467,14 @@ private fun VolumeSlider()
         }
 
         IconButton(
-            onClick = { model.showVolumeSlider = !model.showVolumeSlider },
+            onClick = { App.preferences.SHOW_VOLUME_SLIDER = !(showVolumeSlider ?: false) },
             modifier = Modifier
                 .padding(horizontal = 5.dp)
                 .align(Alignment.CenterVertically)
 
         ) {
             val iconModifier = Modifier.size(24.dp)
-            Crossfade(model.showVolumeSlider) {
+            Crossfade(showVolumeSlider) {
                 when (it)
                 {
                     false -> Icon(Icons.Filled.VolumeUp, "Volume", iconModifier.alpha(0.5f))
